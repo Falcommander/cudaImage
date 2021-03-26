@@ -3,7 +3,8 @@
 int main() {
 
 	//grayscaleStains();
-	another();
+	//grayscaleCase(25);
+	grayscaleWithoutOne();
 
 	return 0;
 }

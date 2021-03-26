@@ -9,23 +9,78 @@
 
 using namespace std;
 
-__global__ void anotherKernel(unsigned char* rgb, unsigned char* g, std::size_t cols, std::size_t rows, int mult)
+__global__ void grayscaleCaseKernel(unsigned char* rgb, unsigned char* g, std::size_t cols, std::size_t rows, std::size_t casePerLine)
 {
 	auto tidx = blockIdx.x * blockDim.x + threadIdx.x;
 	auto tidy = blockIdx.y * blockDim.y + threadIdx.y;
 
+	float caseNumber = cols / ((int)(cols / casePerLine) + 1);
+
 	if (tidx < cols && tidy < rows)
 	{
-		g[tidy * cols + tidx] = (
-			mult * rgb[3 * (tidy * cols + tidx)]
-			+ mult * rgb[3 * (tidy * cols + tidx) + 1]
-			+ mult * rgb[3 * (tidy * cols + tidx) + 2]
-			) / 1024;
+		for (size_t i = 0; i < caseNumber; i++)
+		{
+			for (size_t j = 0; j < caseNumber; j++)
+			{
+				if (i % 2 == 0) {
+					if (j % 2 == 0) {
+						if (cols / caseNumber * i < tidx && tidx < cols / caseNumber * (i + 1)
+							&& rows / caseNumber * j < tidy && tidy < rows / caseNumber * (j + 1))
+						{
+							g[3 * (tidy * cols + tidx)] = (
+								307 * rgb[3 * (tidy * cols + tidx)]
+								+ 604 * rgb[3 * (tidy * cols + tidx) + 1]
+								+ 113 * rgb[3 * (tidy * cols + tidx) + 2]
+								) / 1024;
+							g[3 * (tidy * cols + tidx) + 1] = (
+								307 * rgb[3 * (tidy * cols + tidx)]
+								+ 604 * rgb[3 * (tidy * cols + tidx) + 1]
+								+ 113 * rgb[3 * (tidy * cols + tidx) + 2]
+								) / 1024;
+							g[3 * (tidy * cols + tidx) + 2] = (
+								307 * rgb[3 * (tidy * cols + tidx)]
+								+ 604 * rgb[3 * (tidy * cols + tidx) + 1]
+								+ 113 * rgb[3 * (tidy * cols + tidx) + 2]
+								) / 1024;
+						}
+					}
+				}
+				else {
+					if (j % 2 == 1) {
+						if (cols / caseNumber * i < tidx && tidx < cols / caseNumber * (i + 1)
+							&& rows / caseNumber * j < tidy && tidy < rows / caseNumber * (j + 1))
+						{
+							g[3 * (tidy * cols + tidx)] = (
+								307 * rgb[3 * (tidy * cols + tidx)]
+								+ 604 * rgb[3 * (tidy * cols + tidx) + 1]
+								+ 113 * rgb[3 * (tidy * cols + tidx) + 2]
+								) / 1024;
+							g[3 * (tidy * cols + tidx) + 1] = (
+								307 * rgb[3 * (tidy * cols + tidx)]
+								+ 604 * rgb[3 * (tidy * cols + tidx) + 1]
+								+ 113 * rgb[3 * (tidy * cols + tidx) + 2]
+								) / 1024;
+							g[3 * (tidy * cols + tidx) + 2] = (
+								307 * rgb[3 * (tidy * cols + tidx)]
+								+ 604 * rgb[3 * (tidy * cols + tidx) + 1]
+								+ 113 * rgb[3 * (tidy * cols + tidx) + 2]
+								) / 1024;
+						}
+					}
+				}
+
+				//Colorize all others pixels
+				if (g[3 * (tidy * cols + tidx)] == 0 && g[3 * (tidy * cols + tidx) + 1] == 0 && g[3 * (tidy * cols + tidx) + 2] == 0) {
+					g[3 * (tidy * cols + tidx)] = rgb[3 * (tidy * cols + tidx)];
+					g[3 * (tidy * cols + tidx) + 1] = rgb[3 * (tidy * cols + tidx) + 1];
+					g[3 * (tidy * cols + tidx) + 2] = rgb[3 * (tidy * cols + tidx) + 2];
+				}
+			}
+		}
 	}
 }
 
-
-int another()
+void grayscaleCase(size_t casePerLine = 7)
 {
 	cv::Mat m_in = cv::imread("ecureuil.jpg", cv::IMREAD_UNCHANGED);
 
@@ -33,9 +88,8 @@ int another()
 	auto rows = m_in.rows;
 	auto cols = m_in.cols;
 
-	srand(time(0));
-	std::vector< unsigned char > g(rows * cols);
-	cv::Mat m_out(rows, cols, CV_8UC1, g.data());
+	std::vector< unsigned char > g(3 * rows * cols);
+	cv::Mat m_out(rows, cols, CV_8UC3, g.data());
 
 	unsigned char* rgb_d;
 	unsigned char* g_d;
@@ -48,7 +102,7 @@ int another()
 	cudaEventRecord(cudaStart);
 
 	cudaMalloc(&rgb_d, 3 * rows * cols);
-	cudaMalloc(&g_d, rows * cols);
+	cudaMalloc(&g_d, 3 * rows * cols);
 
 	cudaMemcpy(rgb_d, rgb, 3 * rows * cols, cudaMemcpyHostToDevice);
 
@@ -58,14 +112,9 @@ int another()
 	cout << "rows : " << rows << endl;
 	cout << "cols : " << cols << endl;
 
-	//Test de nombre aléatoire pour avoir quelque chose de viable
-	//int randomNumber = rand() % 1024;
-	//cout << "Random number : " << randomNumber << endl;
+	grayscaleCaseKernel << <grid, block >> > (rgb_d, g_d, cols, rows, casePerLine);
 
-	anotherKernel << <grid, block >> > (rgb_d, g_d, cols, rows, 550);
-
-
-	cudaMemcpy(g.data(), g_d, rows * cols, cudaMemcpyDeviceToHost);
+	cudaMemcpy(g.data(), g_d, 3 * rows * cols, cudaMemcpyDeviceToHost);
 
 	cudaEventRecord(cudaStop);
 	cudaEventSynchronize(cudaStop);
@@ -90,6 +139,4 @@ int another()
 
 	cudaFree(rgb_d);
 	cudaFree(g_d);
-
-	return 0;
 }
