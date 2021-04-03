@@ -21,12 +21,21 @@ __global__ void filter(unsigned char const* in, unsigned char* const out, std::s
 	if (i > 1 && j > 1 && i < w-1 && j < h-1)
 	{
 		for (int c = 0; c < 3; c++) {
-			auto hh = in[((j - 1) * w + i - 1) * 3 + c] - in[((j - 1) * w + i + 1) * 3 + c]
-				+ 2 * in[(j * w + i - 1) * 3 + c] - 2 * in[(j * w + i + 1) * 3 + c]
-				+ in[((j + 1) * w + i - 1) * 3 + c] - in[((j + 1) * w + i + 1) * 3 + c];
-			auto vv = in[((j - 1) * w + i - 1) * 3 + c] - in[((j + 1) * w + i - 1) * 3 + c]
-				+ 2 * in[((j - 1) * w + i) * 3 + c] - 2 * in[((j + 1) * w + i) * 3 + c]
-				+ in[((j - 1) * w + i + 1) * 3 + c] - in[((j + 1) * w + i + 1) * 3 + c];
+
+			auto hh = (hor1 * in[((j - 1) * w + i - 1) * 3 + c] + hor2 * in[((j - 1) * w + i) * 3 + c] + hor3 * in[((j - 1) * w + i + 1) * 3 + c]
+				+ hor4 * in[(j * w + i - 1) * 3 + c] + hor5 * in[(j * w + i) * 3 + c] + hor6 * in[(j * w + i + 1) * 3 + c]
+				+ hor7 * in[((j + 1) * w + i - 1) * 3 + c] + hor8 * in[((j + 1) * w + i) * 3 + c] + hor9 * in[((j + 1) * w + i + 1) * 3 + c]);
+
+			auto vv = (hor1 * in[((j - 1) * w + i - 1) * 3 + c] + hor2 * in[(j * w + i - 1) * 3 + c] + hor3 * in[((j + 1) * w + i - 1) * 3 + c]
+				+ hor4 * in[((j - 1) * w + i) * 3 + c] + hor5 * in[(j * w + i) * 3 + c] + hor6 * in[((j+1) * w + i) * 3 + c]
+				+ hor7 * in[((j - 1) * w + i + 1) * 3 + c] + hor8 * in[(j * w + i + 1) * 3 + c] + hor9* in[((j + 1) * w + i + 1) * 3 + c]);
+
+			//auto hh = in[((j - 1) * w + i - 1) * 3 + c] - in[((j - 1) * w + i + 1) * 3 + c]
+			//	+ 2 * in[(j * w + i - 1) * 3 + c] - 2 * in[(j * w + i + 1) * 3 + c]
+			//	+ in[((j + 1) * w + i - 1) * 3 + c] - in[((j + 1) * w + i + 1) * 3 + c];
+			//auto vv = in[((j - 1) * w + i - 1) * 3 + c] - in[((j + 1) * w + i - 1) * 3 + c]
+			//	+ 2 * in[((j - 1) * w + i) * 3 + c] - 2 * in[((j + 1) * w + i) * 3 + c]
+			//	+ in[((j - 1) * w + i + 1) * 3 + c] - in[((j + 1) * w + i + 1) * 3 + c];
 
 			auto res = hh * hh + vv * vv;
 			res = res > 255 * 255 ? 255 * 255 : res;
