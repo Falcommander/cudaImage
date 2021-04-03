@@ -18,46 +18,34 @@ __global__ void filter(unsigned char const* in, unsigned char* const out, std::s
 	int const hor4 = -1; int const hor5 = 1; int const hor6 = 1;		
 	int const hor7 = 0; int const hor8 = 1; int const hor9 = 2;	
 	
-	
-	if (i > 0 && j > 0 && i < 3*w-1 && j < 3*h-1)
+	if (i > 1 && j > 1 && i < w-1 && j < h-1)
 	{
-		auto hh = hor1 * in[(j - 1) * w + i - 1] + hor2 * in[(j - 1) * w + i] + hor3 * in[(j - 1) * w + i + 1]
-			+ hor4 * in[j * w + i - 1] + hor5 * in[j * w + i] +hor6 * in[j * w + i + 1]
-			+ hor7 * in[(j + 1) * w + i - 1] + hor8 * in[(j + 1) * w + i] + hor9 * in[(j + 1) * w + i + 1];
+		for (int c = 0; c < 3; c++) {
+			auto hh = in[((j - 1) * w + i - 1) * 3 + c] - in[((j - 1) * w + i + 1) * 3 + c]
+				+ 2 * in[(j * w + i - 1) * 3 + c] - 2 * in[(j * w + i + 1) * 3 + c]
+				+ in[((j + 1) * w + i - 1) * 3 + c] - in[((j + 1) * w + i + 1) * 3 + c];
+			auto vv = in[((j - 1) * w + i - 1) * 3 + c] - in[((j + 1) * w + i - 1) * 3 + c]
+				+ 2 * in[((j - 1) * w + i) * 3 + c] - 2 * in[((j + 1) * w + i) * 3 + c]
+				+ in[((j - 1) * w + i + 1) * 3 + c] - in[((j + 1) * w + i + 1) * 3 + c];
 
-		auto vv = hor1 * in[(j - 1) * w + i - 1] + hor2 * in[j * w + i - 1] + hor3 * in[(j + 1) * w + i - 1]
-			+ hor4 * in[(j-1) * w + i] + hor5 * in[j * w + i] + hor6 * in[(j+1) * w + i]
-			+ hor7 * in[(j - 1) * w + i + 1] + hor8 * in[j * w + i + 1] + hor9* in[(j + 1) * w + i + 1];
+			auto res = hh * hh + vv * vv;
+			res = res > 255 * 255 ? 255 * 255 : res;
+			out[(j * w + i) * 3 + c] = sqrt((float)res);
+		}
 
-		auto res = hh * hh + vv * vv;
-		res = res > 255 * 255 ? 255 * 255 : res;
-		out[j * w + i] = sqrtf(res);
 
-		/*hh = hor1 * in[2*((j - 1) * w + i) - 1] + hor2 * in[2*((j - 1) * w + i)] + hor3 * in[2*((j - 1) * w + i) + 1]
-			+ hor4 * in[2*(j * w + i) - 1] + hor5 * in[2*(j * w + i)] + hor6 * in[2*(j * w + i) + 1]
-			+ hor7 * in[2*((j + 1) * w + i) - 1] + hor8 * in[2*((j + 1) * w + i)] + hor9 * in[2*((j + 1) * w + i) + 1];
+		//auto hh = (hor1 * in[(j - 1) * w + i - 1] + hor2 * in[(j - 1) * w + i] + hor3 * in[(j - 1) * w + i + 1]
+		//	+ hor4 * in[j * w + i - 1] + hor5 * in[j * w + i] +hor6 * in[j * w + i + 1]
+		//	+ hor7 * in[(j + 1) * w + i - 1] + hor8 * in[(j + 1) * w + i] + hor9 * in[(j + 1) * w + i + 1]) / 9;
 
-		vv = hor1 * in[2*((j - 1) * w + i) - 1] + hor2 * in[2*(j * w + i) - 1] + hor3 * in[2*((j - 1) * w + i) - 1]
-			+ hor4 * in[2*((j - 1) * w + i)] + hor5 * in[2*(j * w + i)] + hor6 * in[2*((j + 1) * w + i)]
-			+ hor7 * in[2*((j - 1) * w + i) + 1] + hor8 * in[2*(j * w + i) + 1] + hor9 * in[2*((j + 1) * w + i) + 1];
+		//auto vv = (hor1 * in[(j - 1) * w + i - 1] + hor2 * in[j * w + i - 1] + hor3 * in[(j + 1) * w + i - 1]
+		//	+ hor4 * in[(j - 1) * w + i] + hor5 * in[j * w + i] + hor6 * in[(j+1) * w + i]
+		//	+ hor7 * in[(j - 1) * w + i + 1] + hor8 * in[j * w + i + 1] + hor9* in[(j + 1) * w + i + 1]) / 9;
 
-		res = hh * hh + vv * vv;
-		res = res > 255 * 255 ? 255 * 255 : res;
-		out[2*(j * w + i)] = sqrt((float)res);
-
-		auto h = hor1 * in[3 * ((j - 1) * w + i) - 1] + hor2 * in[3 * ((j - 1) * w + i)] + hor3 * in[3 * ((j - 1) * w + i) + 1]
-			+ hor4 * in[3 * (j * w + i) - 1] + hor5 * in[3 * (j * w + i)] + hor6 * in[3 * (j * w + i) + 1]
-			+ hor7 * in[3 * ((j + 1) * w + i) - 1] + hor8 * in[3 * ((j + 1) * w + i)] + hor9 * in[3 * ((j + 1) * w + i) + 1];
-
-		auto v = hor1 * in[3 * ((j - 1) * w + i) - 1] + hor2 * in[3 * (j * w + i) - 1] + hor3 * in[3 * ((j + 1) * w + i) - 1]
-			+ hor4 * in[3 * ((j - 1) * w + i)] + hor5 * in[3 * (j * w + i)] + hor6 * in[3 * ((j + 1) * w + i)]
-			+ hor7 * in[3 * ((j - 1) * w + i) + 1] + hor8 * in[3 * (j * w + i) + 1] + hor9 * in[3 * ((j + 1) * w + i) + 1];
-
-		auto res = h * h + v * v;
-		res = res > 255 * 255 ? 255 * 255 : res;
-		out[(j * w + i)] = sqrtf(res);*/
+		//auto res = hh * hh + vv * vv;
+		//res = res > 255 * 255 ? 255 * 255 : res;
+		//out[j * w + i] = sqrt((float) res);
 	}
-
 }
 
 void filter()
