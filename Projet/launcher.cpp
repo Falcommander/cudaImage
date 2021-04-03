@@ -4,7 +4,8 @@ int main() {
 
 	//grayscaleStains();
 	//grayscaleCase(25);
-	grayscaleWithoutOne();
+	//grayscaleWithoutOne();
+	filter();
 
 	return 0;
 }
