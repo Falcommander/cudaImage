@@ -34,27 +34,36 @@ __global__ void duplicateImageWarhol(unsigned char* in, unsigned char* out, std:
 }
 
 
-__global__ void colorizeImageWarhol(unsigned char* in, unsigned char* out, std::size_t cols, std::size_t rows, int duplicationNumber = 4)
+__global__ void colorizeImageWarhol(unsigned char* in, unsigned char* out, std::size_t cols, std::size_t rows, unsigned int* caseType, int duplicationNumber = 4)
 {
-	//auto tidx = blockIdx.x * blockDim.x + threadIdx.x;
-	//auto tidy = blockIdx.y * blockDim.y + threadIdx.y;
+	auto tidx = blockIdx.x * blockDim.x + threadIdx.x;
+	auto tidy = blockIdx.y * blockDim.y + threadIdx.y;
 
-	//if (tidx < cols && tidy < rows)
-	//{
-	//	int square = cuSquare(duplicationNumber);
+	if (tidx < cols && tidy < rows)
+	{
+		int square = cuSquare(duplicationNumber);
 
-	//	//For each line
-	//	for (int i = 0; i < square; i++) {
+		auto index = 3 * (tidy * cols + tidx);
 
-	//		auto index = 3 * (tidy * cols / square / 2 + tidx / square) + 3 * cols * rows / square * i;
-
-	//		if (out[index] == 0 && out[index + 1] == 0 && out[index + 2] == 0) {
-	//			out[index] = in[3 * (tidy * cols + tidx)];
-	//			out[index + 1] = in[3 * (tidy * cols + tidx) + 1];
-	//			out[index + 2] = in[3 * (tidy * cols + tidx) + 2];
-	//		}
-	//	}
-	//}
+		for (int i = 1; i < square + 1; i++) {
+			for (int j = 2; j < square + 1; j++) {
+				if (caseType[i*j] == 1) {
+					if (out[index] == 0 && out[index + 1] == 0 && out[index + 2] == 0) {
+						out[index] = in[3 * (tidy * cols + tidx)];
+						out[index + 1] = in[3 * (tidy * cols + tidx) + 1];
+						out[index + 2] = in[3 * (tidy * cols + tidx) + 2];
+					}
+				}
+				else if (tidx < cols / square * i && tidy < rows / square * j) {
+					if (out[index] == 0 && out[index + 1] == 0 && out[index + 2] == 0) {
+						out[index] = in[3 * (tidy * cols + tidx)];
+						//out[index + 1] = in[3 * (tidy * cols + tidx) + 1];
+						out[index + 2] = in[3 * (tidy * cols + tidx) + 2];
+					}
+				}
+			}
+		}
+	}
 }
 
 
@@ -75,7 +84,12 @@ void andyWarhol()
 	unsigned char* duplicated_d;
 	unsigned char* out_d;
 
-#pragma region Event & Timer
+	int duplicationNumber = 4;
+
+	std::vector<unsigned int> caseType(duplicationNumber);
+	unsigned int* caseType_d;
+
+	#pragma region Event & Timer
 
 	auto start = std::chrono::system_clock::now();
 	cudaEvent_t cudaStart, cudaStop;
@@ -84,13 +98,16 @@ void andyWarhol()
 
 	cudaEventRecord(cudaStart);
 
-#pragma endregion
+	#pragma endregion
 
 	cudaMalloc(&base_d, 3 * rows * cols);
 	cudaMalloc(&duplicated_d, 3 * rows * cols);
 	cudaMalloc(&out_d, 3 * rows * cols);
 
+	cudaMalloc(&caseType_d, duplicationNumber);
+
 	cudaMemcpy(base_d, rgb, 3 * rows * cols, cudaMemcpyHostToDevice);
+	cudaMemcpy(caseType_d, &caseType[0], duplicationNumber, cudaMemcpyHostToDevice);
 
 	dim3 block(16, 64);
 	dim3 grid((cols - 1) / block.x + 1, (rows - 1) / block.y + 1); //(4,4)
@@ -99,12 +116,12 @@ void andyWarhol()
 	cout << "cols : " << cols << endl;
 
 	duplicateImageWarhol << <grid, block >> > (base_d, duplicated_d, cols, rows);
-	colorizeImageWarhol << <grid, block >> > (duplicated_d, out_d, cols, rows);
+	colorizeImageWarhol << <grid, block >> > (duplicated_d, out_d, cols, rows, caseType_d);
 
 	cudaMemcpy(duplicated.data(), duplicated_d, 3 * rows * cols, cudaMemcpyDeviceToHost);
 	cudaMemcpy(out.data(), out_d, 3 * rows * cols, cudaMemcpyDeviceToHost);
 
-#pragma region Event & Timer
+	#pragma region Event & Timer
 
 
 	cudaEventRecord(cudaStop);
@@ -125,7 +142,7 @@ void andyWarhol()
 
 	std::cout << ms << " ms" << std::endl;
 
-#pragma endregion
+	#pragma endregion
 
 	cv::imwrite("duplicated.jpg", image_duplicated);
 	cv::imwrite("out.jpg", image_out);
