@@ -58,6 +58,8 @@
     <CudaCompile>
       <TargetMachinePlatform>64</TargetMachinePlatform>
       <Include>$(OPENCV_DIR)\include;D:\Programs\Lib\DevILWindowsSDK\include;%(Include)</Include>
+      <CodeGeneration>%(CodeGeneration)</CodeGeneration>
+      <GenerateRelocatableDeviceCode>true</GenerateRelocatableDeviceCode>
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -80,16 +82,19 @@
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <CudaCompile Include="andyWarhol.cu" />
     <CudaCompile Include="another.cu" />
     <CudaCompile Include="grayscaleStains.cu" />
     <CudaCompile Include="grayscaleWithoutOne.cu" />
     <CudaCompile Include="kernel.cu" />
+    <CudaCompile Include="utils.cu" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="launcher.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mainHeader.h" />
+    <ClInclude Include="utils.cuh" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
