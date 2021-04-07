@@ -6,7 +6,12 @@ int main() {
 	//grayscaleStains();
 	//grayscaleCase();
 	//grayscaleWithoutOne();
-	andyWarhol();
+	//andyWarhol();
+
+	//grayscaleStainsCPU();
+	//grayscaleCaseCPU();
+	//grayscaleWithoutOneCPU();
+	andyWarholCPU();
 
 	return 0;
 }

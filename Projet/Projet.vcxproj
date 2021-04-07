@@ -83,13 +83,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <CudaCompile Include="andyWarhol.cu" />
-    <CudaCompile Include="another.cu" />
+    <CudaCompile Include="grayscaleCase.cu" />
     <CudaCompile Include="grayscaleStains.cu" />
     <CudaCompile Include="grayscaleWithoutOne.cu" />
     <CudaCompile Include="kernel.cu" />
     <CudaCompile Include="utils.cu" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="andyWarhol.cpp" />
+    <ClCompile Include="grayscaleCase.cpp" />
+    <ClCompile Include="grayscaleStains.cpp" />
+    <ClCompile Include="grayscaleWithoutOne.cpp" />
     <ClCompile Include="launcher.cpp" />
   </ItemGroup>
   <ItemGroup>

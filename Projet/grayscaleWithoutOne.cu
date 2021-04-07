@@ -78,10 +78,6 @@ void grayscaleWithoutOne()
 	cout << "rows : " << rows << endl;
 	cout << "cols : " << cols << endl;
 
-	//Test de nombre aléatoire pour avoir quelque chose de viable
-	//int randomNumber = rand() % 1024;
-	//cout << "Random number : " << randomNumber << endl;
-
 	greyscaleWithoutOneKernel << <grid, block >> > (rgb_d, g_d, cols, rows);
 
 
