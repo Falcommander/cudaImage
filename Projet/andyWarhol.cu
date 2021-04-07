@@ -148,7 +148,7 @@ void andyWarhol(const int duplicationNumber = 4)
 	cudaMemcpy(base_d, rgb, 3 * rows * cols, cudaMemcpyHostToDevice);
 	cudaMemcpy(caseType_d, caseType.data() , sizeof(unsigned int) * duplicationNumber, cudaMemcpyHostToDevice);
 
-	dim3 block(16, 64);
+	dim3 block(32, 32);
 	dim3 grid((cols - 1) / block.x + 1, (rows - 1) / block.y + 1); //(4,4)
 
 	cout << "rows : " << rows << endl;

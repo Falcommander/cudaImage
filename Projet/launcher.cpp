@@ -4,7 +4,7 @@
 
 int main() {
 	//grayscaleStains();
-	//grayscaleCase(25);
+	//grayscaleCase();
 	//grayscaleWithoutOne();
 	andyWarhol();
 

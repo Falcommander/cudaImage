@@ -106,7 +106,7 @@ void grayscaleCase(size_t casePerLine = 7)
 
 	cudaMemcpy(rgb_d, rgb, 3 * rows * cols, cudaMemcpyHostToDevice);
 
-	dim3 block(32, 32);
+	dim3 block(256, 4);
 	dim3 grid((cols - 1) / block.x + 1, (rows - 1) / block.y + 1); //(4,4)
 
 	cout << "rows : " << rows << endl;
