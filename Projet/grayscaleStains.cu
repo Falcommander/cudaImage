@@ -9,7 +9,7 @@
 
 using namespace std;
 
-__global__ void greyscale(unsigned char* rgb, unsigned char* g, std::size_t cols, std::size_t rows, int mult)
+__global__ void greyscale(unsigned char* rgb, unsigned char* g, const size_t cols, const size_t rows, const int mult)
 {
 	auto tidx = blockIdx.x * blockDim.x + threadIdx.x;
 	auto tidy = blockIdx.y * blockDim.y + threadIdx.y;
@@ -28,6 +28,8 @@ __global__ void greyscale(unsigned char* rgb, unsigned char* g, std::size_t cols
 void grayscaleStains()
 {
 	cv::Mat m_in = cv::imread("ecureuil.jpg", cv::IMREAD_UNCHANGED);
+
+	const int mult = 550;
 
 	auto rgb = m_in.data;
 	auto rows = m_in.rows;
@@ -62,7 +64,7 @@ void grayscaleStains()
 	//int randomNumber = rand() % 1024;
 	//cout << "Random number : " << randomNumber << endl;
 
-	greyscale << <grid, block >> > (rgb_d, g_d, cols, rows, 550);
+	greyscale << <grid, block >> > (rgb_d, g_d, cols, rows, mult);
 
 
 	cudaMemcpy(g.data(), g_d, rows * cols, cudaMemcpyDeviceToHost);

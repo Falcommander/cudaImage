@@ -86,7 +86,6 @@
     <CudaCompile Include="grayscaleCase.cu" />
     <CudaCompile Include="grayscaleStains.cu" />
     <CudaCompile Include="grayscaleWithoutOne.cu" />
-    <CudaCompile Include="kernel.cu" />
     <CudaCompile Include="utils.cu" />
   </ItemGroup>
   <ItemGroup>

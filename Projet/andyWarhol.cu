@@ -19,9 +19,11 @@ __global__ void duplicateImageWarhol(unsigned char* in, unsigned char* out, std:
 	auto tidx = blockIdx.x * blockDim.x + threadIdx.x;
 	auto tidy = blockIdx.y * blockDim.y + threadIdx.y;
 
+	__shared__ int square;
+
 	if (tidx < cols && tidy < rows)
 	{
-		int square = cuSquare(duplicationNumber);
+		square = cuSquare(duplicationNumber);
 
 		//For each line
 		for (int i = 0; i < square; i++) {
@@ -45,9 +47,11 @@ __global__ void colorizeImageWarhol(unsigned char* in, unsigned char* out, std::
 
 	const int effectNumber = 6;
 
+	__shared__ int square;
+
 	if (tidx < cols && tidy < rows)
 	{
-		int square = cuSquare(duplicationNumber);
+		square = cuSquare(duplicationNumber);
 
 		auto index = 3 * (tidy * cols + tidx);
 

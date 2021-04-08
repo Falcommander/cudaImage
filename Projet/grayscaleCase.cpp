@@ -76,7 +76,7 @@ void grayscaleCaseCPUKernel(unsigned char* rgb, unsigned char* g, const size_t c
 	}
 }
 
-void grayscaleCaseCPU(size_t casePerLine = 7)
+void grayscaleCaseCPU(const size_t casePerLine = 7)
 {
 	cv::Mat m_in = cv::imread("ecureuil.jpg", cv::IMREAD_UNCHANGED);
 
