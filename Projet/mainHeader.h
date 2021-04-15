@@ -8,3 +8,9 @@ void convolution_matrix(std::string file);
 void launch();
 void choiceGrayscaleCase(const std::string file);
 inline bool file_exist(const std::string& file);
+void andyWarhol(const int duplicationNumber = 4);
+
+void grayscaleStainsCPU();
+void grayscaleCaseCPU(const size_t casePerLine = 7);
+void grayscaleWithoutOneCPU();
+void andyWarholCPU(const int duplicationNumber = 4);

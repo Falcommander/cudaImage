@@ -10,12 +10,13 @@
 
 using namespace std;
 
-__global__ void grayscaleCaseKernel(unsigned char* rgb, unsigned char* g, std::size_t cols, std::size_t rows, std::size_t casePerLine)
+__global__ void grayscaleCaseKernel(unsigned char* rgb, unsigned char* g, const size_t cols, const size_t rows, const size_t casePerLine)
 {
 	auto tidx = blockIdx.x * blockDim.x + threadIdx.x;
 	auto tidy = blockIdx.y * blockDim.y + threadIdx.y;
 
-	float caseNumber = cols / ((int)(cols / casePerLine) + 1);
+	__shared__ float caseNumber;
+	caseNumber = cols / ((int)(cols / casePerLine) + 1);
 
 	if (tidx < cols && tidy < rows)
 	{
@@ -81,7 +82,7 @@ __global__ void grayscaleCaseKernel(unsigned char* rgb, unsigned char* g, std::s
 	}
 }
 
-void grayscaleCase(std::string name, size_t casePerLine = 7)
+void grayscaleCase(string name, const size_t casePerLine = 7)
 {
 	cv::Mat m_in = cv::imread(name, cv::IMREAD_UNCHANGED);
 
