@@ -58,7 +58,7 @@ void launch()
 void choiceGrayscaleCase(const string file)
 {
 	size_t rows = 0;
-	cout << "En combien de lignes et de colonnes souhaitez-vous que l'image soit découpee (minimum 3)  ?" << endl;
+	cout << "En combien de lignes et de colonnes souhaitez-vous que l'image soit decoupee (minimum 3)  ?" << endl;
 	
 	do {
 		cin >> rows;
