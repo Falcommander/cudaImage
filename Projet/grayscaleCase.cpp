@@ -76,9 +76,9 @@ void grayscaleCaseCPUKernel(unsigned char* rgb, unsigned char* g, const size_t c
 	}
 }
 
-void grayscaleCaseCPU(const size_t casePerLine = 7)
+void grayscaleCaseCPU(const string file, const size_t casePerLine = 7)
 {
-	cv::Mat m_in = cv::imread("ecureuil.jpg", cv::IMREAD_UNCHANGED);
+	cv::Mat m_in = cv::imread(file, cv::IMREAD_UNCHANGED);
 
 	auto rgb = m_in.data;
 	auto rows = m_in.rows;
@@ -101,6 +101,8 @@ void grayscaleCaseCPU(const size_t casePerLine = 7)
 
 	std::cout << ms << " ms" << std::endl;
 
-	cv::imwrite("out.jpg", m_out);
+	cv::imwrite("gcCPU.jpg", m_out);
+	cout << "Le fichier \"gcCPU.jpg\" a bien ete genere. Toutes nos felicitations !" << endl;
+
 
 }

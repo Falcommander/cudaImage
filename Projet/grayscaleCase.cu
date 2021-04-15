@@ -82,7 +82,7 @@ __global__ void grayscaleCaseKernel(unsigned char* rgb, unsigned char* g, const 
 	}
 }
 
-void grayscaleCase(string name, const size_t casePerLine = 7)
+void grayscaleCase(const string name, const size_t casePerLine = 7)
 {
 	cv::Mat m_in = cv::imread(name, cv::IMREAD_UNCHANGED);
 
@@ -137,7 +137,9 @@ void grayscaleCase(string name, const size_t casePerLine = 7)
 
 	std::cout << ms << " ms" << std::endl;
 
-	cv::imwrite("out.jpg", m_out);
+	cv::imwrite("gcCUDA.jpg", m_out);
+	cout << "Le fichier \"gcCUDA.jpg\" a bien ete genere. Toutes nos felicitations !" << endl;
+
 
 	cudaFree(rgb_d);
 	cudaFree(g_d);

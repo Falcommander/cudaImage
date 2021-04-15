@@ -103,7 +103,9 @@ void grayscaleWithoutOne(std::string name)
 
 	std::cout << ms << " ms" << std::endl;
 
-	cv::imwrite("out.jpg", m_out);
+	cv::imwrite("gwoCUDA.jpg", m_out);
+	cout << "Le fichier \"gwoCUDA.jpg\" a bien ete genere. Toutes nos felicitations !" << endl;
+
 
 	cudaFree(rgb_d);
 	cudaFree(g_d);

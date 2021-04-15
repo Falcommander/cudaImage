@@ -20,9 +20,9 @@ void grayscaleStainsCPUKernel(unsigned char* rgb, unsigned char* g, const size_t
 }
 
 
-void grayscaleStainsCPU()
+void grayscaleStainsCPU(const string file)
 {
-	cv::Mat m_in = cv::imread("ecureuil.jpg", cv::IMREAD_UNCHANGED);
+	cv::Mat m_in = cv::imread(file, cv::IMREAD_UNCHANGED);
 
 	const int mult = 550;
 
@@ -52,5 +52,7 @@ void grayscaleStainsCPU()
 
 	std::cout << ms << " ms" << std::endl;
 
-	cv::imwrite("out.jpg", m_out);
+	cv::imwrite("gsCPU.jpg", m_out);
+	cout << "Le fichier \"gsCPU.jpg\" a bien ete genere. Toutes nos felicitations !" << endl;
+
 }

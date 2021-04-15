@@ -13,6 +13,7 @@ int main() {
 void launch()
 {
 	int choice = 0;
+	int choiceProc = 0;
 	string file;
 	cout << "Ce projet a été réalisé par Samir BELFAQUIR et Romain CORBEAU" << endl;
 	cout << "Vous pouvez choisir parmi 5 filtres différents :" << endl;
@@ -21,6 +22,7 @@ void launch()
 	cout << "3. Emboss" << endl;
 	cout << "4. Grayscale without one" << endl;
 	cout << "5. Grayscale Case" << endl;
+	cout << "6. Andy Warhol" << endl;
 
 	do {
 		cin >> choice;
@@ -42,20 +44,35 @@ void launch()
 		}			
 	} while (!file_exist(file));
 
+	cout << "Souhaitez-vous une version CPU ou la version CUDA ? (1 pour le CPU, 2 pour CUDA)" << endl;
+
+	do {
+		cin >> choiceProc;
+	} while (choiceProc != 1 && choiceProc != 2 && !isdigit(choiceProc));
+
 	if (choice == 1)
-		grayscaleStains(file);
+	{
+		if (choiceProc == 1)
+			grayscaleStainsCPU(file);
+		else
+			grayscaleStains(file);
+	}		
 	else if (choice == 2)
-		colored_sobel(file);
+			colored_sobel(file);
 	else if (choice == 3)
 		convolution_matrix(file);
 	else if (choice == 4)
-		grayscaleWithoutOne(file);
+	{
+		if (choiceProc == 1)
+			grayscaleWithoutOneCPU(file);
+		else grayscaleWithoutOne(file);
+	}		
 	else if (choice == 5)
-		choiceGrayscaleCase(file);
+		choiceGrayscaleCase(file, choiceProc);
 }
 
 
-void choiceGrayscaleCase(const string file)
+void choiceGrayscaleCase(const string file, const int choiceProc)
 {
 	size_t rows = 0;
 	cout << "En combien de lignes et de colonnes souhaitez-vous que l'image soit decoupee (minimum 3)  ?" << endl;
@@ -63,8 +80,11 @@ void choiceGrayscaleCase(const string file)
 	do {
 		cin >> rows;
 	} while (rows < 3 && !isdigit(rows));
+	if(choiceProc == 1)
+		grayscaleCaseCPU(file, rows);
+	else
+		grayscaleCase(file, rows);
 
-	grayscaleCase(file, rows);
 }
 
 inline bool file_exist(const string& file)

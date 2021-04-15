@@ -41,9 +41,9 @@ void greyscaleWithoutOneCPUKernel(unsigned char* rgb, unsigned char* g, const si
 }
 
 
-void grayscaleWithoutOneCPU()
+void grayscaleWithoutOneCPU(const string file)
 {
-	cv::Mat m_in = cv::imread("ecureuil.jpg", cv::IMREAD_UNCHANGED);
+	cv::Mat m_in = cv::imread(file, cv::IMREAD_UNCHANGED);
 
 	auto rgb = m_in.data;
 	auto rows = m_in.rows;
@@ -65,6 +65,6 @@ void grayscaleWithoutOneCPU()
 	auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(duration).count();
 
 	std::cout << ms << " ms" << std::endl;
-
-	cv::imwrite("out.jpg", m_out);
+	cv::imwrite("gwoCPU.jpg", m_out);
+	cout << "Le fichier \"gwoCPU.jpg\" a bien ete genere. Toutes nos felicitations !" << endl;
 }

@@ -105,11 +105,11 @@ __global__ void colorizeImageWarhol(unsigned char* in, unsigned char* out, std::
 }
 
 
-void andyWarhol(const int duplicationNumber = 4)
+void andyWarhol(const string file, const int duplicationNumber = 4)
 {
 	srand(time(0));
 
-	cv::Mat m_in = cv::imread("photo.jpg", cv::IMREAD_UNCHANGED);
+	cv::Mat m_in = cv::imread(file, cv::IMREAD_UNCHANGED);
 
 	auto rgb = m_in.data;
 	auto rows = m_in.rows;
@@ -187,8 +187,9 @@ void andyWarhol(const int duplicationNumber = 4)
 
 	#pragma endregion
 
-	cv::imwrite("duplicated.jpg", image_duplicated);
-	cv::imwrite("out.jpg", image_out);
+	cv::imwrite("originalArrayCUDA.jpg", image_duplicated);
+	cv::imwrite("andyWarholdCUDA.jpg", image_out);
+	cout << "Les fichiers \"originalArrayCUDA.jpg\" et \"andyWarholdCUDA.jpg\" ont bien ete genere. Toutes nos felicitations !" << endl;
 
 	cudaFree(base_d);
 	cudaFree(duplicated_d);

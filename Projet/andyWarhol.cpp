@@ -93,11 +93,11 @@ void colorizeImageWarholCPUKernel(unsigned char* in, unsigned char* out, const s
 }
 
 
-void andyWarholCPU(const int duplicationNumber = 4)
+void andyWarholCPU(const string file, const int duplicationNumber = 4)
 {
 	srand(time(0));
 
-	cv::Mat m_in = cv::imread("photo.jpg", cv::IMREAD_UNCHANGED);
+	cv::Mat m_in = cv::imread(file, cv::IMREAD_UNCHANGED);
 
 	auto rgb = m_in.data;
 	auto rows = m_in.rows;
@@ -130,6 +130,8 @@ void andyWarholCPU(const int duplicationNumber = 4)
 
 	std::cout << ms << " ms" << std::endl;
 
-	cv::imwrite("duplicated.jpg", image_duplicated);
-	cv::imwrite("out.jpg", image_out);
+	cv::imwrite("originalArrayCPU.jpg", image_duplicated);
+	cv::imwrite("andyWarholdCPU.jpg", image_out);
+	cout << "Les fichiers \"originalArrayCPU.jpg\" et \"andyWarholdCPU.jpg\" a bien été généré. Toutes nos félicitations !" << endl;
+
 }

@@ -1,16 +1,16 @@
 #pragma once
 #include <string>
-void grayscaleStains(std::string file);
-void grayscaleCase(std::string file, size_t casePerLine = 7);
-void grayscaleWithoutOne(std::string file);
-void colored_sobel(std::string file);
-void convolution_matrix(std::string file);
+void grayscaleStains(const std::string file);
+void grayscaleCase(const std::string file, size_t casePerLine = 7);
+void grayscaleWithoutOne(const std::string file);
+void colored_sobel(const std::string file);
+void convolution_matrix(const std::string file);
 void launch();
-void choiceGrayscaleCase(const std::string file);
+void choiceGrayscaleCase(const std::string file, const int choiceProc);
 inline bool file_exist(const std::string& file);
-void andyWarhol(const int duplicationNumber = 4);
+void andyWarhol(const std::string file, const int duplicationNumber = 4);
 
-void grayscaleStainsCPU();
-void grayscaleCaseCPU(const size_t casePerLine = 7);
-void grayscaleWithoutOneCPU();
-void andyWarholCPU(const int duplicationNumber = 4);
+void grayscaleStainsCPU(const std::string file);
+void grayscaleCaseCPU(const std:: string file, const size_t casePerLine = 7);
+void grayscaleWithoutOneCPU(const std::string file);
+void andyWarholCPU(const std::string file, const int duplicationNumber = 4);

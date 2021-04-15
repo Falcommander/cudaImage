@@ -89,7 +89,9 @@ void grayscaleStains(std::string file)
 
 	std::cout << ms << " ms" << std::endl;
 
-	cv::imwrite("gs.jpg", m_out);
+	cv::imwrite("gsCUDA.jpg", m_out);
+	cout << "Le fichier \"gsCUDA.jpg\" a bien ete genere. Toutes nos felicitations !" << endl;
+
 
 	cudaFree(rgb_d);
 	cudaFree(g_d);
