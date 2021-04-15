@@ -6,6 +6,7 @@
 #include <opencv2/opencv.hpp>
 #include <vector>
 #include <chrono>
+#include <string>
 
 using namespace std;
 
@@ -46,9 +47,9 @@ __global__ void greyscaleWithoutOneKernel(unsigned char* rgb, unsigned char* g, 
 }
 
 
-void grayscaleWithoutOne()
+void grayscaleWithoutOne(std::string name)
 {
-	cv::Mat m_in = cv::imread("ecureuil.jpg", cv::IMREAD_UNCHANGED);
+	cv::Mat m_in = cv::imread(name, cv::IMREAD_UNCHANGED);
 
 	auto rgb = m_in.data;
 	auto rows = m_in.rows;

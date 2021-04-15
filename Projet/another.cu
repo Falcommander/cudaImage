@@ -6,6 +6,7 @@
 #include <opencv2/opencv.hpp>
 #include <vector>
 #include <chrono>
+#include <string>
 
 using namespace std;
 
@@ -80,9 +81,9 @@ __global__ void grayscaleCaseKernel(unsigned char* rgb, unsigned char* g, std::s
 	}
 }
 
-void grayscaleCase(size_t casePerLine = 7)
+void grayscaleCase(std::string name, size_t casePerLine = 7)
 {
-	cv::Mat m_in = cv::imread("ecureuil.jpg", cv::IMREAD_UNCHANGED);
+	cv::Mat m_in = cv::imread(name, cv::IMREAD_UNCHANGED);
 
 	auto rgb = m_in.data;
 	auto rows = m_in.rows;

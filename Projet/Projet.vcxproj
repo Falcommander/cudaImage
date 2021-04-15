@@ -84,9 +84,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <CudaCompile Include="another.cu" />
-    <CudaCompile Include="filter.cu" />
+    <CudaCompile Include="coloredSobel.cu" />
+    <CudaCompile Include="convolution_matrix.cu" />
     <CudaCompile Include="grayscaleStains.cu" />
     <CudaCompile Include="grayscaleWithoutOne.cu" />
+    <CudaCompile Include="grayscale_one_color.cu" />
     <CudaCompile Include="kernel.cu" />
   </ItemGroup>
   <ItemGroup>

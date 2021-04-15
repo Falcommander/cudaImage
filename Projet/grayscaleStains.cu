@@ -6,6 +6,7 @@
 #include <opencv2/opencv.hpp>
 #include <vector>
 #include <chrono>
+#include <string>
 
 using namespace std;
 
@@ -25,9 +26,9 @@ __global__ void greyscale(unsigned char* rgb, unsigned char* g, std::size_t cols
 }
 
 
-void grayscaleStains()
+void grayscaleStains(std::string file)
 {
-	cv::Mat m_in = cv::imread("ecureuil.jpg", cv::IMREAD_UNCHANGED);
+	cv::Mat m_in = cv::imread(file, cv::IMREAD_UNCHANGED);
 
 	auto rgb = m_in.data;
 	auto rows = m_in.rows;
@@ -86,7 +87,7 @@ void grayscaleStains()
 
 	std::cout << ms << " ms" << std::endl;
 
-	cv::imwrite("out.jpg", m_out);
+	cv::imwrite("gs.jpg", m_out);
 
 	cudaFree(rgb_d);
 	cudaFree(g_d);
