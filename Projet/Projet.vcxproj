@@ -83,6 +83,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <CudaCompile Include="andyWarhol.cu" />
+    <CudaCompile Include="coloredSobel.cu" />
+    <CudaCompile Include="convolution_matrix.cu" />
     <CudaCompile Include="grayscaleCase.cu" />
     <CudaCompile Include="grayscaleStains.cu" />
     <CudaCompile Include="grayscaleWithoutOne.cu" />
@@ -98,6 +100,9 @@
   <ItemGroup>
     <ClInclude Include="mainHeader.h" />
     <ClInclude Include="utils.cuh" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
