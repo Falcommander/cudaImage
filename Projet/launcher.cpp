@@ -58,9 +58,21 @@ void launch()
 			grayscaleStains(file);
 	}		
 	else if (choice == 2)
+	{
+		if(choiceProc == 1)
+			colored_sobelCPU(file);
+		else
 			colored_sobel(file);
+	}
+			
 	else if (choice == 3)
-		convolution_matrix(file);
+	{
+		if(choiceProc == 1)
+			convolution_matrixCPU(file);
+		else
+			convolution_matrix(file);
+	}
+		
 	else if (choice == 4)
 	{
 		if (choiceProc == 1)

@@ -14,3 +14,5 @@ void grayscaleStainsCPU(const std::string file);
 void grayscaleCaseCPU(const std:: string file, const size_t casePerLine = 7);
 void grayscaleWithoutOneCPU(const std::string file);
 void andyWarholCPU(const std::string file, const int duplicationNumber = 4);
+void colored_sobelCPU(const std::string file);
+void convolution_matrixCPU(const std::string file);

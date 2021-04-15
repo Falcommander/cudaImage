@@ -83,7 +83,9 @@ void colored_sobel(std::string name)
 
 	std::cout << ms << " ms" << std::endl;
 
-	cv::imwrite("filter.jpg", m_out);
+	cv::imwrite("csCUDA.jpg", m_out);
+	cout << "Le fichier \"csCUDA.jpg\" a bien ete genere. Toutes nos felicitations !" << endl;
+
 
 	cudaFree(rgb_d);
 	cudaFree(out_d);
