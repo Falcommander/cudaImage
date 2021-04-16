@@ -10,6 +10,15 @@ INCLUDE_DIRECTORIES(${OpenCV_INCLUDE_DIRS})
 
 INCLUDE_DIRECTORIES(include)
 FILE(GLOB COMMON
-        "*.h", "*.cpp", "*.cuh", "*.cu")
+ andyWarhol.cpp andyWarhol.cu
+ coloredSobel.cu
+ convolution_matrix.cu
+ grayscaleCase.cpp grayscaleCase.cu
+ grayscaleStains.cpp grayscaleStains.cu
+ grayscaleWithoutOne.cpp grayscaleWithoutOne.cu
+ launcher.cpp
+ utils.cu
+)
 ADD_EXECUTABLE(launcher ${COMMON})
 TARGET_LINK_LIBRARIES(launcher ${OpenCV_LIBS})
+SET(CMAKE_CUDA_FLAGS  "${CMAKE_CXX_FLAGS} -rdc=true")
