@@ -9,6 +9,7 @@ void launch();
 void choiceGrayscaleCase(const std::string file, const int choiceProc);
 inline bool file_exist(const std::string& file);
 void andyWarhol(const std::string file, const int duplicationNumber = 4);
+void choiceAndyWarhol(const std::string file, int choiceProc);
 
 void grayscaleStainsCPU(const std::string file);
 void grayscaleCaseCPU(const std:: string file, const size_t casePerLine = 7);

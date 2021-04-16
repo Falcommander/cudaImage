@@ -1,14 +1,7 @@
 #include "include/mainHeader.h"
 #include <iostream>
 #include <string>
-
-//If c++ == 14
-#if __cplusplus == 201402L
-#include <experimental/filesystem>
-//If C++ >= 14
-#elif __cplusplus > 201402L
-#include <filesystem>
-#endif
+#include <sys/stat.h>
 
 using namespace std;
 
@@ -24,9 +17,9 @@ void launch()
 	int choice = 0;
 	int choiceProc = 0;
 	string file;
-	cout << "Ce projet a été réalisé par Samir BELFAQUIR et Romain CORBEAU" << endl;
-	cout << "Vous pouvez choisir parmi 5 filtres différents :" << endl;
-	cout << "1. Grayscale Strains" << endl;
+	cout << "Ce projet a ete realise par Samir BELFAQUIR et Romain CORBEAU" << endl;
+	cout << "Vous pouvez choisir parmi 6 filtres differents :" << endl;
+	cout << "1. Grayscale Stains" << endl;
 	cout << "2. Colored Sobel" << endl;
 	cout << "3. Emboss" << endl;
 	cout << "4. Grayscale without one" << endl;
@@ -35,7 +28,7 @@ void launch()
 
 	do {
 		cin >> choice;
-	} while (choice < 1 && choice > 5 && !isdigit(choice));
+	} while (choice < 1 && choice > 6 && !isdigit(choice));
 
 	cout << "Entrez le nom (avec l'extension) de l'image que vous souhaitez utiliser" << endl;
 	cout << "Si vous n'entrez rien, une image par defaut sera utilisee" << endl;
@@ -65,31 +58,47 @@ void launch()
 			grayscaleStainsCPU(file);
 		else
 			grayscaleStains(file);
-	}		
+	}
 	else if (choice == 2)
 	{
-		if(choiceProc == 1)
+		if (choiceProc == 1)
 			colored_sobelCPU(file);
 		else
 			colored_sobel(file);
 	}
-			
+
 	else if (choice == 3)
 	{
-		if(choiceProc == 1)
+		if (choiceProc == 1)
 			convolution_matrixCPU(file);
 		else
 			convolution_matrix(file);
 	}
-		
+
 	else if (choice == 4)
 	{
 		if (choiceProc == 1)
 			grayscaleWithoutOneCPU(file);
 		else grayscaleWithoutOne(file);
-	}		
+	}
 	else if (choice == 5)
 		choiceGrayscaleCase(file, choiceProc);
+	else if (choice == 6)
+		choiceAndyWarhol(file, choiceProc);
+}
+
+void choiceAndyWarhol(const string file, const int choiceProc)
+{
+	size_t duplique = 0;
+	cout << "En combien d'images souhaitez-vous qu'elle soit dupliquee ? (minimum 4)" << endl;
+
+	do {
+		cin >> duplique;
+	} while (duplique < 4 && !isdigit(duplique));
+	if (choiceProc == 1)
+		andyWarholCPU(file, duplique);
+	else
+		andyWarhol(file, duplique);
 }
 
 
@@ -110,15 +119,8 @@ void choiceGrayscaleCase(const string file, const int choiceProc)
 
 inline bool file_exist(const string& file)
 {
-	//If C++ < 14
-	#if __cplusplus < 201402L
-		struct stat buffer;
-		return (stat(file.c_str(), &buffer) == 0);	//If C++ == 14
-	#elif __cplusplus == 201402L
-		return std::experimental::filesystem::exists(file);
-	//If C++ >= 14
-	#elif __cplusplus > 201402L
-		return std::filesystem::exists(filename);
-	#endif
+
+	struct stat buffer;
+	return (stat(file.c_str(), &buffer) == 0);
 
 }
