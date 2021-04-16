@@ -100,11 +100,14 @@
     <ClCompile Include="launcher.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="mainHeader.h" />
-    <ClInclude Include="utils.cuh" />
+    <ClInclude Include="include\mainHeader.h" />
+    <ClInclude Include="include\utils.cuh" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="CMakeLists.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
