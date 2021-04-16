@@ -1,6 +1,15 @@
 #include "include/mainHeader.h"
 #include <iostream>
 #include <string>
+
+//If c++ == 14
+#if __cplusplus == 201402L
+#include <experimental/filesystem>
+//If C++ >= 14
+#elif __cplusplus > 201402L
+#include <filesystem>
+#endif
+
 using namespace std;
 
 int main() {
@@ -101,6 +110,15 @@ void choiceGrayscaleCase(const string file, const int choiceProc)
 
 inline bool file_exist(const string& file)
 {
-	struct stat buffer;
-	return (stat(file.c_str(), &buffer) == 0);
+	//If C++ < 14
+	#if __cplusplus < 201402L
+		struct stat buffer;
+		return (stat(file.c_str(), &buffer) == 0);	//If C++ == 14
+	#elif __cplusplus == 201402L
+		return std::experimental::filesystem::exists(file);
+	//If C++ >= 14
+	#elif __cplusplus > 201402L
+		return std::filesystem::exists(filename);
+	#endif
+
 }
