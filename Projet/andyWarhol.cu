@@ -9,7 +9,7 @@
 #include <algorithm>
 #include <iostream>
 #include <numeric>
-#include "utils.cuh"
+#include "include/utils.cuh"
 #include <random>
 
 using namespace std;
