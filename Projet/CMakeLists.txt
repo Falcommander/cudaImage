@@ -11,8 +11,8 @@ INCLUDE_DIRECTORIES(${OpenCV_INCLUDE_DIRS})
 INCLUDE_DIRECTORIES(include)
 FILE(GLOB COMMON
  andyWarhol.cpp andyWarhol.cu
- coloredSobel.cu
- convolution_matrix.cu
+ coloredSobel.cu coloredSobel.cpp
+ convolution_matrix.cu convolution_matrix.cpp
  grayscaleCase.cpp grayscaleCase.cu
  grayscaleStains.cpp grayscaleStains.cu
  grayscaleWithoutOne.cpp grayscaleWithoutOne.cu
